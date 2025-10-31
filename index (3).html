@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta WhatsApp Template Manager</title>
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            --color-slate-900-rgb: 19, 52, 59;
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-error: var(--color-red-500);
+            --color-success: var(--color-teal-500);
+            --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 20px;
+            --font-size-3xl: 24px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --radius-base: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-background: var(--color-charcoal-700);
+                --color-surface: var(--color-charcoal-800);
+                --color-text: var(--color-gray-200);
+                --color-text-secondary: var(--color-gray-300);
+                --color-primary: var(--color-teal-300);
+                --color-border: rgba(119, 124, 124, 0.3);
+                --color-secondary: rgba(119, 124, 124, 0.15);
+                --color-secondary-hover: rgba(119, 124, 124, 0.25);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            padding: var(--space-24);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: var(--font-size-3xl);
+            margin-bottom: var(--space-8);
+            color: var(--color-text);
+        }
+
+        .subtitle {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-32);
+            font-size: var(--font-size-base);
+        }
+
+        .tabs {
+            display: flex;
+            gap: var(--space-8);
+            margin-bottom: var(--space-24);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .tab {
+            padding: var(--space-12) var(--space-24);
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .tab:hover {
+            color: var(--color-text);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--space-24);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-20);
+        }
+
+        label {
+            display: block;
+            margin-bottom: var(--space-8);
+            font-weight: 500;
+            font-size: var(--font-size-sm);
+            color: var(--color-text);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-family: var(--font-family-base);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: var(--space-12) var(--space-24);
+            border-radius: var(--radius-base);
+            border: none;
+            font-size: var(--font-size-base);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .parameter-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-12);
+        }
+
+        .parameter-item {
+            display: flex;
+            gap: var(--space-12);
+            align-items: center;
+        }
+
+        .parameter-item input {
+            flex: 1;
+        }
+
+        .btn-remove {
+            background: var(--color-error);
+            color: white;
+            padding: var(--space-8) var(--space-16);
+            border: none;
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+        }
+
+        .file-upload {
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius-base);
+            padding: var(--space-24);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--color-primary);
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .status-message {
+            padding: var(--space-12);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-16);
+            display: none;
+        }
+
+        .status-message.success {
+            background: rgba(33, 128, 141, 0.15);
+            color: var(--color-success);
+            border: 1px solid var(--color-success);
+        }
+
+        .status-message.error {
+            background: rgba(192, 21, 47, 0.15);
+            color: var(--color-error);
+            border: 1px solid var(--color-error);
+        }
+
+        .status-message.show {
+            display: block;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-16);
+        }
+
+        .phone-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            padding: var(--space-12);
+            margin-top: var(--space-12);
+        }
+
+        .phone-item {
+            padding: var(--space-8);
+            border-bottom: 1px solid var(--color-border);
+            font-size: var(--font-size-sm);
+        }
+
+        .phone-item:last-child {
+            border-bottom: none;
+        }
+
+        .send-progress {
+            margin-top: var(--space-16);
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--color-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: var(--space-8);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .code-block {
+            background: var(--color-secondary);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: var(--font-size-sm);
+            margin-top: var(--space-12);
+        }
+
+        .helper-text {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-top: var(--space-8);
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Container -->
+    <div id="authContainer" style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+        <div style="width: 100%; max-width: 400px;">
+            <!-- Sign In Form -->
+            <div id="signinForm" class="auth-form card">
+                <div style="text-align: center; margin-bottom: var(--space-24);">
+                    <img src="https://i.postimg.cc/kg32bYFk/PVAUTOLOGO.jpg" alt="PV Automation Logo" style="max-width: 200px; height: auto;">
+                </div>
+                <h2>Sign In</h2>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="signinEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signinPassword" placeholder="Enter your password">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="signIn()">Sign In</button>
+                <div id="signinStatus" class="status-message"></div>
+                
+                <div style="text-align: center; margin: var(--space-20) 0;">
+                    <span style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">OR</span>
+                </div>
+                
+                <div id="googleSignInButton" style="display: flex; justify-content: center; margin-bottom: var(--space-16);"></div>
+                
+                <p style="text-align: center; margin-top: var(--space-16); font-size: var(--font-size-sm);">
+                    <a href="#" onclick="showAuthScreen('signupForm')" style="color: var(--color-primary);">Create an account</a> | 
+                    <a href="#" onclick="showAuthScreen('forgotForm')" style="color: var(--color-primary);">Forgot password?</a>
+                </p>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signupForm" class="auth-form card" style="display: none;">
+                <div style="text-align: center; margin-bottom: var(--space-24);">
+                    <img src="https://i.postimg.cc/kg32bYFk/PVAUTOLOGO.jpg" alt="PV Automation Logo" style="max-width: 200px; height: auto;">
+                </div>
+                <h2>Create Account</h2>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" placeholder="Confirm your password">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="signUp()">Create Account</button>
+                <div id="signupStatus" class="status-message"></div>
+                
+                <div style="text-align: center; margin: var(--space-20) 0;">
+                    <span style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">OR</span>
+                </div>
+                
+                <div id="googleSignUpButton" style="display: flex; justify-content: center; margin-bottom: var(--space-16);"></div>
+                
+                <p style="text-align: center; margin-top: var(--space-16); font-size: var(--font-size-sm);">
+                    Already have an account? <a href="#" onclick="showAuthScreen('signinForm')" style="color: var(--color-primary);">Sign in</a>
+                </p>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div id="forgotForm" class="auth-form card" style="display: none;">
+                <div style="text-align: center; margin-bottom: var(--space-24);">
+                    <img src="https://i.postimg.cc/kg32bYFk/PVAUTOLOGO.jpg" alt="PV Automation Logo" style="max-width: 200px; height: auto;">
+                </div>
+                <h2>Reset Password</h2>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="forgotEmail" placeholder="Enter your email">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="forgotPassword()">Reset Password</button>
+                <div id="forgotStatus" class="status-message"></div>
+                <p style="text-align: center; margin-top: var(--space-16); font-size: var(--font-size-sm);">
+                    Remember your password? <a href="#" onclick="showAuthScreen('signinForm')" style="color: var(--color-primary);">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="mainApp" style="display: none;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-24);">
+                <div>
+                    <h1>Meta WhatsApp Template Manager</h1>
+                    <p class="subtitle">Create templates and send bulk messages via WhatsApp Business API</p>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()">Logout</button>
+            </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('credentials')">API Credentials</button>
+            <button class="tab" onclick="switchTab('create')">Create Template</button>
+            <button class="tab" onclick="switchTab('templates')">My Templates</button>
+            <button class="tab" onclick="switchTab('send')">Send Messages</button>
+            <button class="tab" onclick="switchTab('history')">History</button>
+            <button class="tab" onclick="switchTab('account')">Account Settings</button>
+        </div>
+
+        <!-- Credentials Tab -->
+        <div id="credentials" class="tab-content active">
+            <div class="card">
+                <h2>WhatsApp Business API Configuration</h2>
+                <div class="form-group">
+                    <label>Access Token</label>
+                    <input type="password" id="accessToken" placeholder="Enter your Meta Access Token">
+                    <p class="helper-text">Get this from Meta Business Manager → WhatsApp → API Setup</p>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number ID</label>
+                    <input type="text" id="phoneNumberId" placeholder="Enter Phone Number ID">
+                    <p class="helper-text">Found in WhatsApp Business Manager under Phone Numbers</p>
+                </div>
+                <div class="form-group">
+                    <label>Business Account ID</label>
+                    <input type="text" id="businessAccountId" placeholder="Enter WhatsApp Business Account ID">
+                </div>
+                <button class="btn btn-primary" onclick="saveCredentials()">Save Credentials</button>
+                <div id="credentialsStatus" class="status-message"></div>
+            </div>
+        </div>
+
+        <!-- My Templates Tab -->
+        <div id="templates" class="tab-content">
+            <div class="card">
+                <h2>Saved Templates</h2>
+                <div id="savedTemplatesList"></div>
+            </div>
+        </div>
+
+        <!-- Create Template Tab -->
+        <div id="create" class="tab-content">
+            <div class="card">
+                <h2>Create WhatsApp Template</h2>
+                <div class="form-group">
+                    <label>Template Name</label>
+                    <input type="text" id="templateName" placeholder="e.g., blood_donor_welcome">
+                    <p class="helper-text">Lowercase, no spaces, use underscores</p>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="templateCategory">
+                        <option value="MARKETING">Marketing</option>
+                        <option value="UTILITY">Utility</option>
+                        <option value="AUTHENTICATION">Authentication</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Language</label>
+                    <select id="templateLanguage">
+                        <option value="en">English</option>
+                        <option value="en_US">English (US)</option>
+                        <option value="ta">Tamil</option>
+                        <option value="hi">Hindi</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Header (Optional)</label>
+                    <input type="text" id="templateHeader" placeholder="Header text">
+                </div>
+                <div class="form-group">
+                    <label>Body Text</label>
+                    <textarea id="templateBody" placeholder="Use {{1}}, {{2}} for parameters"></textarea>
+                    <p class="helper-text">Example: Hello {{1}}, you have {{2}} donations.</p>
+                </div>
+                <div class="form-group">
+                    <label>Footer (Optional)</label>
+                    <input type="text" id="templateFooter" placeholder="Footer text">
+                </div>
+                <div class="form-group">
+                    <label>Add Buttons (Optional)</label>
+                    <div id="buttonsList"></div>
+                    <button class="btn btn-secondary" onclick="addButton()">+ Add Button</button>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="createTemplate()">Create Template</button>
+                <div id="createStatus" class="status-message"></div>
+                
+                <div class="code-block" id="templateJson" style="display:none;">
+                    <pre id="jsonOutput"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Send Messages Tab -->
+        <div id="send" class="tab-content">
+            <div class="grid">
+                <div class="card">
+                    <h2>Upload Phone Numbers</h2>
+                    <div class="file-upload" onclick="document.getElementById('excelFile').click()">
+                        <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" onchange="loadExcelFile(event)">
+                        <p>📁 Click to upload Excel/CSV file</p>
+                        <p class="helper-text">File should contain a column with phone numbers</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number Column Name</label>
+                        <input type="text" id="phoneColumn" value="phone" placeholder="e.g., phone, mobile, number">
+                    </div>
+                    <div id="phoneList" class="phone-list" style="display:none;"></div>
+                </div>
+
+                <div class="card">
+                    <h2>Template Configuration</h2>
+                    <div class="form-group">
+                        <label>Template Name</label>
+                        <input type="text" id="sendTemplateName" placeholder="Enter template name">
+                    </div>
+                    <div class="form-group">
+                        <label>Parameters (comma-separated)</label>
+                        <textarea id="templateParams" placeholder="Name, Count, Date"></textarea>
+                        <p class="helper-text">These will replace {{1}}, {{2}}, etc. in template</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Use Excel Columns for Parameters</label>
+                        <input type="checkbox" id="useExcelParams" onchange="toggleExcelParams()">
+                        <p class="helper-text">Map template parameters to Excel columns</p>
+                    </div>
+                    <div id="excelParamMapping" style="display:none;"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <button class="btn btn-primary btn-block" onclick="sendBulkMessages()">Send Bulk Messages</button>
+                <div id="sendStatus" class="status-message"></div>
+                <div class="send-progress" id="sendProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p id="progressText">Sending: 0 / 0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="history" class="tab-content">
+            <div class="card">
+                <h2>Messaging History</h2>
+                <div class="form-group">
+                    <label>Filter by Date</label>
+                    <input type="date" id="filterDate" onchange="loadHistory()">
+                </div>
+                <div id="historyList"></div>
+            </div>
+        </div>
+
+        <!-- Account Settings Tab -->
+        <div id="account" class="tab-content">
+            <div class="card">
+                <h2>Account Settings</h2>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" id="accountEmail" readonly style="background: var(--color-secondary);">
+                </div>
+                <h3 style="margin-top: var(--space-24); margin-bottom: var(--space-16);">Change Password</h3>
+                <div class="form-group">
+                    <label>Current Password</label>
+                    <input type="password" id="currentPassword" placeholder="Enter current password">
+                </div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password">
+                </div>
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" placeholder="Confirm new password">
+                </div>
+                <button class="btn btn-primary" onclick="changePassword()">Change Password</button>
+                <div id="changePasswordStatus" class="status-message"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        let credentials = {};
+        let phoneNumbers = [];
+        let excelData = [];
+        let buttonCount = 0;
+        let currentUser = null;
+        let users = JSON.parse(localStorage.getItem('users') || '{}');
+        let userTemplates = JSON.parse(localStorage.getItem('userTemplates') || '{}');
+        let userPhoneLists = JSON.parse(localStorage.getItem('userPhoneLists') || '{}');
+        let messagingHistory = JSON.parse(localStorage.getItem('messagingHistory') || '{}');
+
+        // Authentication functions
+        function showAuthScreen(screen) {
+            document.getElementById('authContainer').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'none';
+            document.querySelectorAll('.auth-form').forEach(f => f.style.display = 'none');
+            document.getElementById(screen).style.display = 'block';
+        }
+
+        function showMainApp() {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            loadUserCredentials();
+        }
+
+        function signUp() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+            if (!email || !password) {
+                showStatus('signupStatus', 'Please fill in all fields', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showStatus('signupStatus', 'Passwords do not match', 'error');
+                return;
+            }
+
+            if (users[email]) {
+                showStatus('signupStatus', 'User already exists', 'error');
+                return;
+            }
+
+            users[email] = {
+                password: btoa(password),
+                credentials: {}
+            };
+            localStorage.setItem('users', JSON.stringify(users));
+            showStatus('signupStatus', 'Account created successfully! Please sign in.', 'success');
+            setTimeout(() => showAuthScreen('signinForm'), 2000);
+        }
+
+        function signIn() {
+            const email = document.getElementById('signinEmail').value;
+            const password = document.getElementById('signinPassword').value;
+
+            if (!email || !password) {
+                showStatus('signinStatus', 'Please fill in all fields', 'error');
+                return;
+            }
+
+            const user = users[email];
+            if (!user || user.password !== btoa(password)) {
+                showStatus('signinStatus', 'Invalid email or password', 'error');
+                return;
+            }
+
+            currentUser = email;
+            localStorage.setItem('currentUser', email);
+            showMainApp();
+        }
+
+        function forgotPassword() {
+            const email = document.getElementById('forgotEmail').value;
+
+            if (!email) {
+                showStatus('forgotStatus', 'Please enter your email', 'error');
+                return;
+            }
+
+            if (!users[email]) {
+                showStatus('forgotStatus', 'User not found', 'error');
+                return;
+            }
+
+            showStatus('forgotStatus', 'Password reset link sent to your email (simulated)', 'success');
+        }
+
+        function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+            if (!currentPassword || !newPassword || !confirmNewPassword) {
+                showStatus('changePasswordStatus', 'Please fill in all fields', 'error');
+                return;
+            }
+
+            const user = users[currentUser];
+            if (user.password !== btoa(currentPassword)) {
+                showStatus('changePasswordStatus', 'Current password is incorrect', 'error');
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                showStatus('changePasswordStatus', 'New passwords do not match', 'error');
+                return;
+            }
+
+            user.password = btoa(newPassword);
+            users[currentUser] = user;
+            localStorage.setItem('users', JSON.stringify(users));
+            showStatus('changePasswordStatus', 'Password changed successfully!', 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showAuthScreen('signinForm');
+        }
+
+        function loadUserCredentials() {
+            const user = users[currentUser];
+            if (user && user.credentials) {
+                credentials = user.credentials;
+                document.getElementById('accessToken').value = credentials.accessToken || '';
+                document.getElementById('phoneNumberId').value = credentials.phoneNumberId || '';
+                document.getElementById('businessAccountId').value = credentials.businessAccountId || '';
+            }
+            loadSavedTemplates();
+            loadHistory();
+        }
+
+        function loadSavedTemplates() {
+            const templates = userTemplates[currentUser] || [];
+            const templatesList = document.getElementById('savedTemplatesList');
+            
+            if (templates.length === 0) {
+                templatesList.innerHTML = '<p style="color: var(--color-text-secondary);">No saved templates yet. Create one to get started!</p>';
+                return;
+            }
+
+            templatesList.innerHTML = '';
+            templates.forEach((template, index) => {
+                const templateCard = document.createElement('div');
+                templateCard.className = 'card';
+                templateCard.style.marginBottom = 'var(--space-16)';
+                templateCard.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <h3>${template.name}</h3>
+                            <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm); margin: var(--space-8) 0;">
+                                Category: ${template.category} | Language: ${template.language}
+                            </p>
+                            <p style="margin: var(--space-12) 0;">${template.body}</p>
+                            ${template.status ? `<span class="status-message ${template.status === 'approved' ? 'success' : 'error'}" style="display: inline-block;">Status: ${template.status}</span>` : ''}
+                        </div>
+                        <div style="display: flex; gap: var(--space-8);">
+                            <button class="btn btn-secondary" onclick="useTemplate(${index})">Use</button>
+                            <button class="btn-remove" onclick="deleteTemplate(${index})">Delete</button>
+                        </div>
+                    </div>
+                `;
+                templatesList.appendChild(templateCard);
+            });
+        }
+
+        function saveTemplateToStorage(templateData) {
+            if (!userTemplates[currentUser]) {
+                userTemplates[currentUser] = [];
+            }
+            userTemplates[currentUser].push({
+                ...templateData,
+                createdAt: new Date().toISOString(),
+                status: 'pending'
+            });
+            localStorage.setItem('userTemplates', JSON.stringify(userTemplates));
+        }
+
+        function deleteTemplate(index) {
+            if (confirm('Are you sure you want to delete this template?')) {
+                userTemplates[currentUser].splice(index, 1);
+                localStorage.setItem('userTemplates', JSON.stringify(userTemplates));
+                loadSavedTemplates();
+            }
+        }
+
+        function useTemplate(index) {
+            const template = userTemplates[currentUser][index];
+            document.getElementById('sendTemplateName').value = template.name;
+            switchTab('send');
+            document.querySelector('[onclick="switchTab(\'send\')"]').click();
+        }
+
+        function savePhoneList(listName, phones, data) {
+            if (!userPhoneLists[currentUser]) {
+                userPhoneLists[currentUser] = [];
+            }
+            userPhoneLists[currentUser].push({
+                name: listName,
+                phones: phones,
+                data: data,
+                savedAt: new Date().toISOString(),
+                count: phones.length
+            });
+            localStorage.setItem('userPhoneLists', JSON.stringify(userPhoneLists));
+        }
+
+        function logMessagingHistory(templateName, phoneCount, sent, failed) {
+            if (!messagingHistory[currentUser]) {
+                messagingHistory[currentUser] = [];
+            }
+            messagingHistory[currentUser].push({
+                templateName: templateName,
+                totalNumbers: phoneCount,
+                sent: sent,
+                failed: failed,
+                timestamp: new Date().toISOString(),
+                date: new Date().toLocaleDateString()
+            });
+            localStorage.setItem('messagingHistory', JSON.stringify(messagingHistory));
+        }
+
+        function loadHistory() {
+            const history = messagingHistory[currentUser] || [];
+            const historyList = document.getElementById('historyList');
+            const filterDate = document.getElementById('filterDate')?.value;
+
+            let filteredHistory = history;
+            if (filterDate) {
+                const selectedDate = new Date(filterDate).toLocaleDateString();
+                filteredHistory = history.filter(h => h.date === selectedDate);
+            }
+
+            if (filteredHistory.length === 0) {
+                historyList.innerHTML = '<p style="color: var(--color-text-secondary);">No messaging history found.</p>';
+                return;
+            }
+
+            historyList.innerHTML = '';
+            filteredHistory.reverse().forEach((record, index) => {
+                const historyCard = document.createElement('div');
+                historyCard.className = 'card';
+                historyCard.style.marginBottom = 'var(--space-16)';
+                const date = new Date(record.timestamp);
+                historyCard.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <h3 style="margin-bottom: var(--space-8);">${record.templateName}</h3>
+                            <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">
+                                ${date.toLocaleString()}
+                            </p>
+                            <div style="margin-top: var(--space-12); display: flex; gap: var(--space-24);">
+                                <span>Total: <strong>${record.totalNumbers}</strong></span>
+                                <span style="color: var(--color-success);">Sent: <strong>${record.sent}</strong></span>
+                                <span style="color: var(--color-error);">Failed: <strong>${record.failed}</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                historyList.appendChild(historyCard);
+            });
+        }
+
+        // Google Sign In Callback
+        function handleCredentialResponse(response) {
+            const credential = response.credential;
+            const payload = JSON.parseFromString(atob(credential.split('.')[1]));
+            const email = payload.email;
+            const name = payload.name;
+
+            // Create or login user with Google account
+            if (!users[email]) {
+                users[email] = {
+                    password: btoa(Math.random().toString(36)),
+                    credentials: {},
+                    googleAccount: true,
+                    name: name
+                };
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            currentUser = email;
+            localStorage.setItem('currentUser', email);
+            showMainApp();
+        }
+
+        JSON.parseFromString = function(str) {
+            return JSON.parse(str);
+        };
+
+        // Initialize Google Sign In
+        function initializeGoogleSignIn() {
+            google.accounts.id.initialize({
+                client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            });
+            
+            google.accounts.id.renderButton(
+                document.getElementById('googleSignInButton'),
+                { 
+                    theme: 'outline', 
+                    size: 'large',
+                    text: 'signin_with',
+                    width: 300
+                }
+            );
+            
+            google.accounts.id.renderButton(
+                document.getElementById('googleSignUpButton'),
+                { 
+                    theme: 'outline', 
+                    size: 'large',
+                    text: 'signup_with',
+                    width: 300
+                }
+            );
+        }
+
+        // Check if user is logged in on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser && users[savedUser]) {
+                currentUser = savedUser;
+                showMainApp();
+            } else {
+                showAuthScreen('signinForm');
+            }
+            
+            // Initialize Google Sign In after page loads
+            setTimeout(initializeGoogleSignIn, 500);
+        });
+
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            if (tabName === 'account') {
+                document.getElementById('accountEmail').value = currentUser;
+            }
+        }
+
+        // Save credentials
+        function saveCredentials() {
+            credentials = {
+                accessToken: document.getElementById('accessToken').value,
+                phoneNumberId: document.getElementById('phoneNumberId').value,
+                businessAccountId: document.getElementById('businessAccountId').value
+            };
+            
+            if (!credentials.accessToken || !credentials.phoneNumberId) {
+                showStatus('credentialsStatus', 'Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Save to user profile
+            const user = users[currentUser];
+            user.credentials = credentials;
+            users[currentUser] = user;
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            showStatus('credentialsStatus', 'Credentials saved successfully!', 'success');
+        }
+
+        // Add button to template
+        function addButton() {
+            buttonCount++;
+            const buttonsList = document.getElementById('buttonsList');
+            const buttonDiv = document.createElement('div');
+            buttonDiv.className = 'parameter-item';
+            buttonDiv.innerHTML = `
+                <input type="text" placeholder="Button Text" id="btn${buttonCount}">
+                <select id="btnType${buttonCount}">
+                    <option value="QUICK_REPLY">Quick Reply</option>
+                    <option value="URL">URL</option>
+                    <option value="PHONE_NUMBER">Phone Number</option>
+                </select>
+                <button class="btn-remove" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            buttonsList.appendChild(buttonDiv);
+        }
+
+        // Create template
+        async function createTemplate() {
+            if (!credentials.accessToken || !credentials.businessAccountId) {
+                showStatus('createStatus', 'Please configure API credentials first', 'error');
+                return;
+            }
+
+            const templateName = document.getElementById('templateName').value;
+            const category = document.getElementById('templateCategory').value;
+            const language = document.getElementById('templateLanguage').value;
+            const header = document.getElementById('templateHeader').value;
+            const body = document.getElementById('templateBody').value;
+            const footer = document.getElementById('templateFooter').value;
+
+            if (!templateName || !body) {
+                showStatus('createStatus', 'Template name and body are required', 'error');
+                return;
+            }
+
+            const components = [];
+
+            if (header) {
+                components.push({
+                    type: "HEADER",
+                    format: "TEXT",
+                    text: header
+                });
+            }
+
+            components.push({
+                type: "BODY",
+                text: body
+            });
+
+            if (footer) {
+                components.push({
+                    type: "FOOTER",
+                    text: footer
+                });
+            }
+
+            // Add buttons if any
+            const buttons = [];
+            for (let i = 1; i <= buttonCount; i++) {
+                const btnText = document.getElementById(`btn${i}`)?.value;
+                const btnType = document.getElementById(`btnType${i}`)?.value;
+                if (btnText) {
+                    buttons.push({
+                        type: btnType,
+                        text: btnText
+                    });
+                }
+            }
+
+            if (buttons.length > 0) {
+                components.push({
+                    type: "BUTTONS",
+                    buttons: buttons
+                });
+            }
+
+            const templateData = {
+                name: templateName,
+                category: category,
+                language: language,
+                components: components
+            };
+
+            // Display JSON
+            document.getElementById('jsonOutput').textContent = JSON.stringify(templateData, null, 2);
+            document.getElementById('templateJson').style.display = 'block';
+
+            // API Call
+            try {
+                const response = await fetch(`https://graph.facebook.com/v21.0/${credentials.businessAccountId}/message_templates`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${credentials.accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(templateData)
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    saveTemplateToStorage(templateData);
+                    showStatus('createStatus', `Template created successfully! ID: ${result.id}`, 'success');
+                    loadSavedTemplates();
+                } else {
+                    showStatus('createStatus', `Error: ${result.error?.message || 'Failed to create template'}`, 'error');
+                }
+            } catch (error) {
+                showStatus('createStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Load Excel file
+        function loadExcelFile(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                excelData = XLSX.utils.sheet_to_json(firstSheet);
+                
+                const phoneColumn = document.getElementById('phoneColumn').value;
+                phoneNumbers = excelData.map(row => row[phoneColumn]).filter(num => num);
+
+                // Auto-save phone list
+                const fileName = file.name.replace(/\.[^/.]+$/, "");
+                savePhoneList(fileName, phoneNumbers, excelData);
+
+                displayPhoneNumbers();
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Display phone numbers
+        function displayPhoneNumbers() {
+            const phoneList = document.getElementById('phoneList');
+            phoneList.innerHTML = `<strong>Loaded ${phoneNumbers.length} phone numbers:</strong>`;
+            phoneNumbers.slice(0, 10).forEach(num => {
+                const item = document.createElement('div');
+                item.className = 'phone-item';
+                item.textContent = num;
+                phoneList.appendChild(item);
+            });
+            if (phoneNumbers.length > 10) {
+                const more = document.createElement('div');
+                more.className = 'phone-item';
+                more.textContent = `... and ${phoneNumbers.length - 10} more`;
+                phoneList.appendChild(more);
+            }
+            phoneList.style.display = 'block';
+        }
+
+        // Toggle Excel parameter mapping
+        function toggleExcelParams() {
+            const mapping = document.getElementById('excelParamMapping');
+            if (document.getElementById('useExcelParams').checked) {
+                mapping.style.display = 'block';
+                if (excelData.length > 0) {
+                    const columns = Object.keys(excelData[0]);
+                    mapping.innerHTML = '<label>Map Parameters to Columns:</label>';
+                    for (let i = 1; i <= 5; i++) {
+                        const select = document.createElement('select');
+                        select.id = `paramMap${i}`;
+                        select.innerHTML = '<option value="">-- Select Column --</option>';
+                        columns.forEach(col => {
+                            select.innerHTML += `<option value="${col}">${col}</option>`;
+                        });
+                        const label = document.createElement('label');
+                        label.textContent = `Parameter {{${i}}}:`;
+                        mapping.appendChild(label);
+                        mapping.appendChild(select);
+                    }
+                }
+            } else {
+                mapping.style.display = 'none';
+            }
+        }
+
+        // Send bulk messages
+        async function sendBulkMessages() {
+            if (!credentials.accessToken || !credentials.phoneNumberId) {
+                showStatus('sendStatus', 'Please configure API credentials first', 'error');
+                return;
+            }
+
+            if (phoneNumbers.length === 0) {
+                showStatus('sendStatus', 'Please upload phone numbers first', 'error');
+                return;
+            }
+
+            const templateName = document.getElementById('sendTemplateName').value;
+            if (!templateName) {
+                showStatus('sendStatus', 'Please enter template name', 'error');
+                return;
+            }
+
+            const useExcelParams = document.getElementById('useExcelParams').checked;
+            let params = [];
+
+            if (!useExcelParams) {
+                const paramsText = document.getElementById('templateParams').value;
+                if (paramsText) {
+                    params = paramsText.split(',').map(p => p.trim()).filter(p => p);
+                }
+            }
+
+            const progress = document.getElementById('sendProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            progress.style.display = 'block';
+
+            let sent = 0;
+            let failed = 0;
+            let errorMessages = [];
+
+            for (let i = 0; i < phoneNumbers.length; i++) {
+                let phone = String(phoneNumbers[i]).replace(/\D/g, ''); // Remove non-digits
+                
+                // Ensure phone number has country code
+                if (!phone.startsWith('91') && phone.length === 10) {
+                    phone = '91' + phone; // Add India country code if missing
+                }
+
+                let messageParams = [];
+
+                if (useExcelParams && excelData[i]) {
+                    for (let j = 1; j <= 5; j++) {
+                        const col = document.getElementById(`paramMap${j}`)?.value;
+                        if (col && excelData[i][col]) {
+                            messageParams.push({
+                                type: "text",
+                                text: String(excelData[i][col])
+                            });
+                        }
+                    }
+                } else if (params.length > 0) {
+                    messageParams = params.map(p => ({
+                        type: "text",
+                        text: String(p)
+                    }));
+                }
+
+                // Build message data
+                const messageData = {
+                    messaging_product: "whatsapp",
+                    to: phone,
+                    type: "template",
+                    template: {
+                        name: templateName,
+                        language: {
+                            code: "en"
+                        }
+                    }
+                };
+
+                // Only add components if parameters exist
+                if (messageParams.length > 0) {
+                    messageData.template.components = [{
+                        type: "body",
+                        parameters: messageParams
+                    }];
+                }
+
+                console.log('Sending message:', JSON.stringify(messageData, null, 2));
+
+                try {
+                    const response = await fetch(`https://graph.facebook.com/v21.0/${credentials.phoneNumberId}/messages`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${credentials.accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(messageData)
+                    });
+
+                    const result = await response.json();
+                    console.log('Response:', result);
+
+                    if (response.ok) {
+                        sent++;
+                    } else {
+                        failed++;
+                        const errorMsg = result.error?.message || 'Unknown error';
+                        errorMessages.push(`${phone}: ${errorMsg}`);
+                        console.error('Failed to send to', phone, ':', errorMsg);
+                    }
+                } catch (error) {
+                    failed++;
+                    errorMessages.push(`${phone}: ${error.message}`);
+                    console.error('Error sending to', phone, ':', error);
+                }
+
+                const percent = ((i + 1) / phoneNumbers.length) * 100;
+                progressFill.style.width = `${percent}%`;
+                progressText.textContent = `Sending: ${i + 1} / ${phoneNumbers.length}`;
+
+                // Delay to avoid rate limiting
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            logMessagingHistory(templateName, phoneNumbers.length, sent, failed);
+            
+            let statusMessage = `Completed! Sent: ${sent}, Failed: ${failed}`;
+            if (errorMessages.length > 0 && errorMessages.length <= 3) {
+                statusMessage += '\n\nErrors:\n' + errorMessages.join('\n');
+            }
+            
+            showStatus('sendStatus', statusMessage, sent > 0 ? 'success' : 'error');
+            console.log('All errors:', errorMessages);
+            loadHistory();
+        }
+
+        // Show status message
+        function showStatus(elementId, message, type) {
+            const status = document.getElementById(elementId);
+            status.textContent = message;
+            status.className = `status-message ${type} show`;
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
